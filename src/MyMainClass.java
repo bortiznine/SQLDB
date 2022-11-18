@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.Scanner;
 
 public class MyMainClass {
-    public static void main(String[] args) throws SQLException, InterruptedException {
+    public static void main(String[] args) {
 
         int input=3;
         while (input!=0) {
