@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
 public class MyMainClass {
@@ -19,6 +20,60 @@ public class MyMainClass {
             System.out.println("User input: " + input);
             switch (input) {
                 case 1:
+try {
+    System.out.println("Let's insert a New Customer");
+    System.out.println("Please enter name:");
+    Scanner sc2 = new Scanner(System.in);
+    String name = sc2.nextLine();
+    System.out.println("User input: " + name);
+
+    System.out.println("Please enter address:");
+    Scanner sc3 = new Scanner(System.in);
+    String address = sc3.nextLine();
+    System.out.println("User input: " + address);
+
+    System.out.println("Please enter phone number Format(XXX-XXX-XXXX):");
+    Scanner sc4 = new Scanner(System.in);
+    String phonenum = sc4.nextLine();
+    System.out.println("User input: " + phonenum);
+
+    System.out.println("Please enter dob Format(YYYY-MM-DD):");
+    Scanner sc5 = new Scanner(System.in);
+    String dob = (sc5.next());
+    System.out.println("User input: " + dob);
+
+    Date dateinput;
+    SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd");
+    dateinput= (Date) dateFormat.parse(dob);
+
+    System.out.println("Please enter  Date created following pattern YYYY-MM-DD:");
+    Scanner sc6 = new Scanner(System.in);
+    String date_created = sc6.nextLine();
+    System.out.println("User input: " + date_created);
+    Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/FoodServices", "root", "AcabJet1509$");
+    PreparedStatement p =con.prepareStatement("INSERT INTO Customer (Cname, Address,Phone_Number,DateOfBirth) values (?,?,?,?) ");
+    p.setString(1, name);
+    p.setString(2,address);
+    p.setString(3,phonenum);
+    p.setDate(4,dateinput);
+
+    ResultSet query=p.executeQuery();
+    System.out.println("Insert Completed!\n");
+    while (query.next()) {
+        // print the results
+
+        System.out.println(name + address + phonenum +dateinput);
+    }
+    p.close();
+    con.close();
+    Thread.sleep(3000);
+
+
+
+}
+catch(Exception e){
+    e.getMessage();
+}
                     break;
                 case 2:
                     System.out.println(
