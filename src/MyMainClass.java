@@ -11,7 +11,7 @@ public class MyMainClass {
 
         int input=3;
         while (input!=0) {
-            System.out.println("Food Service DB");
+            System.out.println("Welcome to the Food Service DB");
             System.out.println("Are you a entering a new Customer(1):\nLooking up information(2):\nExit (0)");
             Scanner sc = new Scanner(System.in);
             System.out.println("Enter a value :");
