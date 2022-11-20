@@ -85,11 +85,11 @@ public class MyMainClass {
                                 statement.close();
                                 while (rs6.next()) {
                                     String cName = rs6.getString("C.Cname");
-                                    Date dob = rs6.getDate("C.DateofBirth");
+                                    Date dob = rs6.getDate("C.DateOfBirth");
 
 
                                     // print the results
-                                    System.out.format("%s, %s\n", cName, dob);
+                                    System.out.println( cName+" | " + dob);
                                 }
                                 break;
                             case 7:
