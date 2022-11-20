@@ -65,16 +65,20 @@ public class MyMainClass {
                             case 5:
                                 con = DriverManager.getConnection("jdbc:mysql://localhost:3306/FoodServices", "root", "AcabJet1509$");
                                 System.out.println("Connected");
-                                statement = con.createStatement();
                                 PreparedStatement p =con.prepareStatement("SELECT COUNT( C.Cname) FROM Customer AS C, Orders AS O, Grocery_Store AS G, Item AS GI, Dines AS D, Restaurant AS R WHERE C.Custid=O.Custid " +
                                         "AND G.Gid=O.Gid AND G.Gid=GI.Gid AND GI.Item_Name='seasonal products'" +
                                         " AND C.Custid = D.Custid AND R.Rid = D.Rid AND R.Rname=?; ");
                                 p.setString(1, "Sunny's Steakhouse");
                                 ResultSet query=p.executeQuery();
+                                System.out.println("Count of Name\n");
                                 while (query.next()) {
                                     // print the results
+
                                     System.out.println(query.getInt("COUNT(C.name)"));
                                 }
+                                p.close();
+                                con.close();
+                                Thread.sleep(3000);
                                 break;
                             case 6:
                                 con = DriverManager.getConnection("jdbc:mysql://localhost:3306/FoodServices", "root", "AcabJet1509$");
@@ -82,7 +86,7 @@ public class MyMainClass {
                                 statement = con.createStatement();
                                 ResultSet rs6 = statement.executeQuery("SELECT C.Cname, C.DateOfBirth FROM Customer AS C, Dines AS D, Restaurant AS R, Dish AS DI " +
                                         "WHERE C.Custid = D.Custid AND R.Rid = D.Rid AND R.Rid = DI.Rid AND DI.Dish_Name = 'Cobb salad' ORDER BY Cname DESC, C.DateOfBirth DESC ;");
-
+                                System.out.println("Customer Name  |  Date of Birth\n");
                                 while (rs6.next()) {
                                     String cName = rs6.getString("C.Cname");
                                     Date dob = rs6.getDate("C.DateOfBirth");
@@ -93,6 +97,7 @@ public class MyMainClass {
                                 }
                                 statement.close();
                                 con.close();
+                                Thread.sleep(3000);
                                 break;
                             case 7:
                                 con = DriverManager.getConnection("jdbc:mysql://localhost:3306/FoodServices", "root", "AcabJet1509$");
@@ -100,7 +105,7 @@ public class MyMainClass {
                                 statement = con.createStatement();
                                 ResultSet rs7 = statement.executeQuery("SELECT S.Supply_Date,R.Rname FROM Supplies AS S, Restaurant AS R WHERE S.Rid=R.Rid AND DATE(Supply_Date) " +
                                         "in ('2020-01-01', '2020-01-17','2020-02-12','2020-02-14','2020-02/21','2020-03-17','2020-04-13','2020-05-30', '2020-07-04', '2020-09-05', '2020-11-11','2020-11-24','2020-12-25'); ");
-                                statement.close();
+                                System.out.println("Supply Date | Restaurant Name\n");
                                 while (rs7.next()) {
                                     Date supply_date = rs7.getDate("S.Supply_Date");
                                     String rname = rs7.getString("R.Rname");
@@ -109,13 +114,16 @@ public class MyMainClass {
                                     // print the results
                                     System.out.format("%s, %s\n", supply_date, rname);
                                 }
+                                statement.close();
+                                con.close();
+                                Thread.sleep(3000);
                                 break;
                             case 8:
                                 con = DriverManager.getConnection("jdbc:mysql://localhost:3306/FoodServices", "root", "AcabJet1509$");
                                 System.out.println("Connected");
                                 statement = con.createStatement();
                                 ResultSet rs8 = statement.executeQuery("SELECT C.Cname, C.DateOfBirth FROM Customer AS C, Delivers AS D1, Dines AS D2 WHERE C.Custid=D1.Custid and C.Custid!=D2.Custid; ");
-                                statement.close();
+                                System.out.println("Customer Name | Date of Birth\n");
                                 while (rs8.next()) {
                                     String cName = rs8.getString("C.Cname");
                                     Date dob = rs8.getDate("C.DateOfBirth");
@@ -124,6 +132,9 @@ public class MyMainClass {
                                     // print the results
                                     System.out.format("%s, %s\n", cName, dob);
                                 }
+                                statement.close();
+                                con.close();
+                                Thread.sleep(3000);
                                 break;
                             case 0:
                                 System.out.println("Returning to Main Menu!");
