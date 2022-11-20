@@ -65,7 +65,7 @@ public class MyMainClass {
                             case 5:
                                 con = DriverManager.getConnection("jdbc:mysql://localhost:3306/FoodServices", "root", "AcabJet1509$");
                                 System.out.println("Connected");
-                                PreparedStatement p =con.prepareStatement("SELECT COUNT( C.Cname) FROM Customer AS C, Orders AS O, Grocery_Store AS G, Item AS GI, Dines AS D, Restaurant AS R WHERE C.Custid=O.Custid " +
+                                PreparedStatement p =con.prepareStatement("SELECT COUNT( C.Cname) as total FROM Customer AS C, Orders AS O, Grocery_Store AS G, Item AS GI, Dines AS D, Restaurant AS R WHERE C.Custid=O.Custid " +
                                         "AND G.Gid=O.Gid AND G.Gid=GI.Gid AND GI.Item_Name='seasonal products'" +
                                         " AND C.Custid = D.Custid AND R.Rid = D.Rid AND R.Rname=?; ");
                                 p.setString(1, "Sunny's Steakhouse");
@@ -73,8 +73,8 @@ public class MyMainClass {
                                 System.out.println("Count of Name\n");
                                 while (query.next()) {
                                     // print the results
-
-                                    System.out.println(query.getInt("COUNT(C.name)"));
+                                    int countName = query.getInt("total");
+                                    System.out.println(countName);
                                 }
                                 p.close();
                                 con.close();
