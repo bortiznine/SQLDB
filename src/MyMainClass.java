@@ -39,7 +39,7 @@ public class MyMainClass {
                         switch(input2) {
 
                             case 1:
-                                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/MyCompany", "root", "LuxSux-2021");
+                                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/FoodServices", "root", "AcabJet1509$");
                                 System.out.println("Connected");
                                 Statement statement = con.createStatement();
                                 ResultSet rs = statement.executeQuery("select * from customer;");
