@@ -77,9 +77,9 @@ catch(Exception e){
                     break;
                 case 2:
                     System.out.println(
-                            "Query1 (1):" +
-                            "\nQuery2 (2):" +
-                            "\nQuery3 (3)" +
+                            "Display the customers (by address and birthday) that ordered soda between 2010 and 2020. (1)" +
+                            "\nDisplay in alphabetical order the names, addresses, and the average number of orders from restaurants that get supplied with white bread. (2)" +
+                            "\nDisplay all Grocery stores and their addresses that have margarine and have supply request in 2022 (3)" +
                             "\nQuery4 (4)" +
                             "\nGet a count of all customers by name that only ordered seasonal products and dine at Baker’s Square. (5)" +
                             "\nDisplay the names and birthdays of customers in descending order that ordered Cobb salad at Olive Garden. (6)" +
@@ -97,23 +97,61 @@ catch(Exception e){
                                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/FoodServices", "root", "AcabJet1509$");
                                 System.out.println("Connected");
                                 Statement statement = con.createStatement();
-                                ResultSet rs = statement.executeQuery("select * from customer;");
-                                statement.close();
-                                while (rs.next()) {
-                                    int id = rs.getInt("id");
-                                    String firstName = rs.getString("first_name");
-                                    String lastName = rs.getString("last_name");
-                                    Date dateCreated = rs.getDate("date_created");
-                                    boolean isAdmin = rs.getBoolean("is_admin");
-                                    int numPoints = rs.getInt("num_points");
+                                ResultSet rs1 = statement.executeQuery("SELECT     C.Cname, C.DateOfBirth\n" +
+                                        "FROM        Customer AS C, Orders AS O, Grocery_Store AS G\n" +
+                                        "WHERE        G.Gid in (select G.Gid from Grocery_Store as G,Item as GI where G.Gid=GI.Gid and GI.item_Name='soda') AND (O.Order_Date BETWEEN '2010-01-01' AND '2020-12-31') AND (C.Custid = O.Custid AND O.Gid = G.Gid );\n;");
+
+                                while (rs1.next()) {
+                                    String Cname = rs1.getString("Cname");
+                                    Date DateOfBirth = rs1.getDate("DateOfBirth");
 
                                     // print the results
-                                    System.out.format("%s, %s, %s, %s, %s, %s\n", id, firstName, lastName, dateCreated, isAdmin, numPoints);
+                                    System.out.format("%s, %s\n", Cname, DateOfBirth);
                                 }
+                                statement.close();
+                                con.close();
+                                Thread.sleep(3000);
                                 break;
                             case 2:
+                                con = DriverManager.getConnection("jdbc:mysql://localhost:3306/FoodServices", "root", "AcabJet1509$");
+                                System.out.println("Connected");
+                                statement = con.createStatement();
+                                ResultSet rs2 = statement.executeQuery("SELECT R.Rname, R.Address, AVG(Sid) as avg    \n" +
+                                        "FROM Restaurant AS R, Supplies AS S, Grocery_Store AS G, Item AS GI  \n" +
+                                        "WHERE (GI.Item_Name= 'white bread') AND (R.Rid = S.Rid AND S.Gid = G.Gid AND G.Gid = GI.Gid) \n" +
+                                        "ORDER BY R.Rname , R.Address ASC;   ");
+                                while (rs2.next()) {
+
+                                    String rname = rs2.getString("R.Rname");
+                                    String address = rs2.getString("R.Address");
+                                    int avgval = rs2.getInt("avg");
+
+
+                                    // print the results
+                                    System.out.format("%s,%s,%s\n",  rname, address,avgval);
+                                }
+                                statement.close();
+                                con.close();
+                                Thread.sleep(3000);
                                 break;
                             case 3:
+                                con = DriverManager.getConnection("jdbc:mysql://localhost:3306/FoodServices", "root", "AcabJet1509$");
+                                System.out.println("Connected");
+                                statement = con.createStatement();
+                                ResultSet rs3 = statement.executeQuery(" SELECT G.Gname, G.Address  FROM Grocery_Store AS G, Supplies AS S,Item AS GI\n" +
+                                        "WHERE(GI.Item_Name = 'margarine') AND YEAR(S.Supply_Date) = 2019 AND (G.Gid = S.Gid  AND G.Gid = GI.Gid);   ");
+                                System.out.println("Customer Name | Date of Birth\n");
+                                while (rs3.next()) {
+                                    String Gname = rs3.getString("G.Gname");
+                                    String Gaddress = rs3.getString("G.Address");
+
+
+                                    // print the results
+                                    System.out.format("%s, %s\n", Gname, Gaddress );
+                                }
+                                statement.close();
+                                con.close();
+                                Thread.sleep(3000);
                                 break;
                             case 4:
                                 break;
