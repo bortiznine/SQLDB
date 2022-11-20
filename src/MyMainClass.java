@@ -39,31 +39,23 @@ try {
 
     System.out.println("Please enter dob Format(YYYY-MM-DD):");
     Scanner sc5 = new Scanner(System.in);
-    String dob = (sc5.next());
+    String dob = (sc5.nextLine());
     System.out.println("User input: " + dob);
 
-    Date dateinput;
-    SimpleDateFormat dateFormat= new SimpleDateFormat("yyyy-MM-dd");
-    dateinput= (Date) dateFormat.parse(dob);
-
-    System.out.println("Please enter  Date created following pattern YYYY-MM-DD:");
-    Scanner sc6 = new Scanner(System.in);
-    String date_created = sc6.nextLine();
-    System.out.println("User input: " + date_created);
     Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/FoodServices", "root", "AcabJet1509$");
-    PreparedStatement p =con.prepareStatement("INSERT INTO Customer (Cname, Address,Phone_Number,DateOfBirth) values (?,?,?,?) ");
+    PreparedStatement p =con.prepareStatement("INSERT INTO Customer (Cname, Address,Phone_Number,DateOfBirth) values (?,?,?,?) ;");
     p.setString(1, name);
     p.setString(2,address);
     p.setString(3,phonenum);
-    p.setDate(4,dateinput);
+    p.setDate(4,Date.valueOf(dob));
 
-    ResultSet query=p.executeQuery();
+    p.execute();
     System.out.println("Insert Completed!\n");
-    while (query.next()) {
-        // print the results
 
-        System.out.println(name + address + phonenum +dateinput);
-    }
+        // print the results
+    System.out.println("Customer Name"+" | " + "Address" +" | "+ "Phone #" +" | "+"Date Of Birth");
+    System.out.println(name+" | " + address +" | "+ phonenum +" | "+dob);
+
     p.close();
     con.close();
     Thread.sleep(3000);
@@ -72,7 +64,7 @@ try {
 
 }
 catch(Exception e){
-    e.getMessage();
+    System.out.println(e.getMessage());
 }
                     break;
                 case 2:
