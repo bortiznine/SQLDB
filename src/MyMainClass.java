@@ -82,7 +82,7 @@ public class MyMainClass {
                                 statement = con.createStatement();
                                 ResultSet rs6 = statement.executeQuery("SELECT C.Cname, C.DateOfBirth FROM Customer AS C, Dines AS D, Restaurant AS R, Dish AS DI " +
                                         "WHERE C.Custid = D.Custid AND R.Rid = D.Rid AND R.Rid = DI.Rid AND DI.Dish_Name = 'Cobb salad' ORDER BY Cname DESC, C.DateOfBirth DESC ;");
-                                statement.close();
+
                                 while (rs6.next()) {
                                     String cName = rs6.getString("C.Cname");
                                     Date dob = rs6.getDate("C.DateOfBirth");
@@ -91,6 +91,8 @@ public class MyMainClass {
                                     // print the results
                                     System.out.println( cName+" | " + dob);
                                 }
+                                statement.close();
+                                con.close();
                                 break;
                             case 7:
                                 con = DriverManager.getConnection("jdbc:mysql://localhost:3306/FoodServices", "root", "AcabJet1509$");
