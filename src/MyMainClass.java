@@ -71,8 +71,8 @@ catch(Exception e){
                     System.out.println(
                             "Display the customers (by address and birthday) that ordered soda between 2010 and 2020. (1)" +
                             "\nDisplay in alphabetical order the names, addresses, and the average number of orders from restaurants that get supplied with white bread. (2)" +
-                            "\nDisplay all Grocery stores and their addresses that have margarine and have supply request in 2022 (3)" +
-                            "\nDisplay top 5 Grocery stores by orders (4)" +
+                            "\nDisplay all Grocery stores and their addresses that have margarine and have supply request in a specific year (3)" +
+                            "\nDisplay top n Grocery stores by orders (4)" +
                             "\nGet a count of all customers by name that only ordered seasonal products and dine at Baker’s Square. (5)" +
                             "\nDisplay the names and birthdays of customers in descending order that ordered Cobb salad at Olive Garden. (6)" +
                             "\nShow supply requests by date and restaurant name of all restaurants that ordered on US holidays in 2020. (7)" +
@@ -130,36 +130,50 @@ catch(Exception e){
                             case 3:
                                 con = DriverManager.getConnection("jdbc:mysql://localhost:3306/FoodServices", "root", "AcabJet1509$");
                                 System.out.println("Connected");
-                                statement = con.createStatement();
-                                ResultSet rs3 = statement.executeQuery(" SELECT G.Gname, G.Address  FROM Grocery_Store AS G, Supplies AS S,Item AS GI\n" +
-                                        "WHERE(GI.Item_Name = 'margarine') AND YEAR(S.Supply_Date) = 2019 AND (G.Gid = S.Gid  AND G.Gid = GI.Gid);   ");
+                                //prompt user for input
+                                Scanner sc3 = new Scanner(System.in);
+                                System.out.println("Please enter a year (between 2015 and 2022): ");
+                                String year = sc3.nextLine();
+                                //modify query with custom input
+                                PreparedStatement ps3 = con.prepareStatement(" SELECT G.Gname, G.Address  FROM Grocery_Store AS G, Supplies AS S,Item AS GI\n" +
+                                        "WHERE(GI.Item_Name = 'margarine') AND YEAR(S.Supply_Date) = ? AND (G.Gid = S.Gid  AND G.Gid = GI.Gid); ");
+                                ps3.setString(1, year);
+
+                                ResultSet queryt=ps3.executeQuery();
                                 System.out.println("Customer Name | Address\n");
-                                while (rs3.next()) {
-                                    String Gname = rs3.getString("G.Gname");
-                                    String Gaddress = rs3.getString("G.Address");
-
-
+                                while (queryt.next()) {
                                     // print the results
+                                    String Gname = queryt.getString("G.Gname");
+                                    String Gaddress = queryt.getString("G.Address");
+
                                     System.out.format("%s, %s\n", Gname, Gaddress );
                                 }
-                                statement.close();
+
+                                ps3.close();
                                 con.close();
                                 Thread.sleep(3000);
                                 break;
                             case 4:
                                 con = DriverManager.getConnection("jdbc:mysql://localhost:3306/FoodServices", "root", "AcabJet1509$");
                                 System.out.println("Connected");
-                                statement = con.createStatement();
-                                ResultSet rs4 = statement.executeQuery(" SELECT G.Gname FROM Grocery_Store AS G, Orders AS O \n" +
-                                        "WHERE G.Gid = O.Gid GROUP BY G.Gname Order BY Count(O.Oid) DESC LIMIT 5;   ");
-                                System.out.println("Grocery Store Name\n");
-                                while (rs4.next()) {
-                                    String Gname = rs4.getString("G.Gname");
+                                //prompt user for input
+                                Scanner sc4 = new Scanner(System.in);
+                                System.out.println("Please enter number (less than 10): ");
+                                Integer n = sc4.nextInt();
+                                //modify query with custom input
+                                PreparedStatement ps4 = con.prepareStatement(" SELECT G.Gname FROM Grocery_Store AS G, Orders AS O \n" +
+                                        "WHERE G.Gid = O.Gid GROUP BY G.Gname Order BY Count(O.Oid) DESC LIMIT ? ;  ");
+                                ps4.setInt(1, n);
 
+                                ResultSet qt=ps4.executeQuery();
+                                System.out.println("Grocery Store Name\n");
+                                while (qt.next()) {
                                     // print the results
+                                    String Gname = qt.getString("G.Gname");
+
                                     System.out.format("\n %s ", Gname );
                                 }
-                                statement.close();
+                                qt.close();
                                 con.close();
                                 Thread.sleep(3000);
                                 break;
