@@ -73,7 +73,7 @@ catch(Exception e){
                             "\nDisplay in alphabetical order the names, addresses, and the average number of orders from restaurants that get supplied with white bread. (2)" +
                             "\nDisplay all Grocery stores and their addresses that have margarine and have supply request in a specific year (3)" +
                             "\nDisplay top n Grocery stores by orders (4)" +
-                            "\nGet a count of all customers by name that only ordered seasonal products and dine at Baker’s Square. (5)" +
+                            "\nGet a count of all customers by name that only ordered seasonal products and dine at Semma. (5)" +
                             "\nDisplay the names and birthdays of customers in descending order that ordered Cobb salad at Olive Garden. (6)" +
                             "\nShow supply requests by date and restaurant name of all restaurants that ordered on US holidays in 2020. (7)" +
                             "\nIdentify customers by name, and date of birth that have no dine orders but have deliveries. (8)" +
@@ -180,10 +180,10 @@ catch(Exception e){
                             case 5:
                                 con = DriverManager.getConnection("jdbc:mysql://localhost:3306/FoodServices", "root", "AcabJet1509$");
                                 System.out.println("Connected");
-                                PreparedStatement p =con.prepareStatement("SELECT COUNT( C.Cname) as total FROM Customer AS C, Orders AS O, Grocery_Store AS G, Item AS GI, Dines AS D, Restaurant AS R WHERE C.Custid=O.Custid " +
+                                PreparedStatement p =con.prepareStatement("SELECT COUNT(C.Cname) as total FROM Customer AS C, Orders AS O, Grocery_Store AS G, Item AS GI, Dines AS D, Restaurant AS R WHERE C.Custid=O.Custid " +
                                         "AND G.Gid=O.Gid AND G.Gid=GI.Gid AND GI.Item_Name='seasonal products'" +
-                                        " AND C.Custid = D.Custid AND R.Rid = D.Rid AND R.Rname=?; ");
-                                p.setString(1, "Sunny's Steakhouse");
+                                        " AND C.Custid = D.Custid AND R.Rid = D.Rid AND R.Rname= ?; ");
+                                p.setString(1, "Semma");
                                 ResultSet query=p.executeQuery();
                                 System.out.println("Count of Name\n");
                                 while (query.next()) {
