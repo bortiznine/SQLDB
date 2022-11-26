@@ -219,7 +219,7 @@ catch(Exception e){
                                 System.out.println("Connected");
                                 statement = con.createStatement();
                                 ResultSet rs7 = statement.executeQuery("SELECT S.Supply_Date,R.Rname FROM Supplies AS S, Restaurant AS R WHERE S.Rid=R.Rid AND DATE(Supply_Date) " +
-                                        "in ('2020-01-01', '2020-01-17','2020-02-12','2020-02-14','2020-02/21','2020-03-17','2020-04-13','2020-05-30', '2020-07-04', '2020-09-05', '2020-11-11','2020-11-24','2020-12-25'); ");
+                                        "in ('2020-01-01', '2020-01-17','2020-02-12','2020-02-14','2020-02-21','2020-03-17','2020-04-13','2020-05-30', '2020-07-04', '2020-09-05', '2020-11-11','2020-11-24','2020-12-25'); ");
                                 System.out.println("Supply Date | Restaurant Name\n");
                                 while (rs7.next()) {
                                     Date supply_date = rs7.getDate("S.Supply_Date");
